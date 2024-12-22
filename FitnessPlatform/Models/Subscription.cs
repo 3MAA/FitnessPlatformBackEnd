@@ -17,5 +17,5 @@ public partial class Subscription
 
     public string? Term { get; set; }
 
-    public virtual User? User { get; set; }
+    public virtual User? UserIdNavigation { get; set; }
 }

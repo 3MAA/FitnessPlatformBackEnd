@@ -45,7 +45,7 @@ public partial class FitnessDbContext : DbContext
             entity.Property(e => e.DiscountId).ValueGeneratedNever();
             entity.Property(e => e.DiscountPercent).HasColumnType("decimal(5, 2)");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Discounts)
+            entity.HasOne(d => d.UserIdNavigation).WithMany(p => p.Discounts)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK__Discounts__UserI__4316F928");
         });
@@ -81,7 +81,7 @@ public partial class FitnessDbContext : DbContext
             entity.Property(e => e.Progress).HasColumnType("decimal(8, 2)");
             entity.Property(e => e.TargetValue).HasColumnType("decimal(8, 2)");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Objectives)
+            entity.HasOne(d => d.UserIdNavigation).WithMany(p => p.Objectives)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK__Objective__UserI__3D5E1FD2");
         });
@@ -99,7 +99,7 @@ public partial class FitnessDbContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.User).WithMany(p => p.Subscriptions)
+            entity.HasOne(d => d.UserIdNavigation).WithMany(p => p.Subscriptions)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK__Subscript__UserI__403A8C7D");
         });

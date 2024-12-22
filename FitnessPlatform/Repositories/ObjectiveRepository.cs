@@ -18,7 +18,7 @@ namespace FitnessPlatform.Repositories
         public async Task<List<Objective>> GetAllObjectives()
         {
             return await _context.Objectives
-                .Include(o => o.UserId) // Eager loading for related User
+                .Include(o => o.UserIdNavigation) // Eager loading for related User
                 .ToListAsync(); ;
         }
 
@@ -26,14 +26,14 @@ namespace FitnessPlatform.Repositories
         {
             int parsedId = int.Parse(id);
             return await _context.Objectives
-                .Include(o => o.UserId)
+                .Include(o => o.UserIdNavigation)
                 .FirstOrDefaultAsync(o => o.ObjectiveId == parsedId);
         }
 
         public async Task<Objective> GetObjectiveByType(string type)
         {
             return await _context.Objectives
-                .Include(o => o.UserId)
+                .Include(o => o.UserIdNavigation)
                 .FirstOrDefaultAsync(o => o.ObjectiveType == type);
         }
 

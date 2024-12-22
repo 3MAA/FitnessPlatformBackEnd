@@ -15,7 +15,5 @@
         public DateOnly? StartDate { get; set; }
 
         public DateOnly? Deadline { get; set; }
-
-        public virtual User? User { get; set; }
     }
 }
