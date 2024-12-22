@@ -21,5 +21,5 @@ public partial class Objective
 
     public DateOnly? Deadline { get; set; }
 
-    public virtual User? User { get; set; }
+    public virtual User? UserIdNavigation { get; set; }
 }

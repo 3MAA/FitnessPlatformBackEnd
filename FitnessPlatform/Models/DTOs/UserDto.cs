@@ -18,7 +18,5 @@
 
         public decimal? UserHeight { get; set; }
 
-        public virtual ICollection<Objective> Objectives { get; set; } = new List<Objective>();
-
     }
 }

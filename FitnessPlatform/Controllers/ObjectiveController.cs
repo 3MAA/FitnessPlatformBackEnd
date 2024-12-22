@@ -41,7 +41,7 @@ namespace FitnessPlatform.Controllers
         public async Task<IActionResult> Post([FromBody] ObjectiveDto objectiveDto)
         {
             await _objectiveService.CreateObjective(objectiveDto);
-            return CreatedAtAction(nameof(GetObjectiveById), new { id = objectiveDto.UserId }, PostSuccessMessage);
+            return CreatedAtAction(nameof(GetObjectiveById), new { id = objectiveDto.ObjectiveId }, PostSuccessMessage);
         }
 
         [HttpDelete("{id}")]
