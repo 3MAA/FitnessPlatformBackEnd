@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace FitnessPlatform.Models;
 
 public partial class Subscription
 {
+    [Key]
     public int SubscriptionId { get; set; }
 
     public int? UserId { get; set; }

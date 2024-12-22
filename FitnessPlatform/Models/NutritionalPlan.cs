@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace FitnessPlatform.Models;
 
 public partial class NutritionalPlan
 {
+    [Key]
     public int PlanId { get; set; }
 
     public string? PlanType { get; set; }
