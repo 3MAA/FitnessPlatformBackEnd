@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace FitnessPlatform.Models;
 
 public partial class Workout
 {
+    [Key]
     public int WorkoutId { get; set; }
 
     public string? WorkoutDescription { get; set; }
