@@ -44,14 +44,25 @@ namespace FitnessPlatform.Controllers
             return CreatedAtAction(nameof(GetObjectiveById), new { id = objectiveDto.ObjectiveId }, PostSuccessMessage);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        [HttpDelete("logical/{id}")]
+        public async Task<IActionResult> DeleteLogical(string id)
         {
             var objective = await _objectiveService.GetObjectiveById(id);
             if (objective == null)
                 return NotFound(new { Message = $"Objective with ID {id} not found." });
 
             await _objectiveService.DeleteObjective(id);
+            return NoContent();
+        }
+
+        [HttpDelete("physical/{id}")]
+        public async Task<IActionResult> DeletePhysical(string id)
+        {
+            var objective = await _objectiveService.GetObjectiveById(id);
+            if (objective == null)
+                return NotFound(new { Message = $"Objective with ID {id} not found." });
+
+            await _objectiveService.DeleteObjectivePermanently(id);
             return NoContent();
         }
 

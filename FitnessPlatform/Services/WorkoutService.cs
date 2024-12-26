@@ -45,7 +45,22 @@ namespace FitnessPlatform.Services
 
         public async Task DeleteWorkout(string id)
         {
+            var workout = await _workoutRepository.GetWorkoutById(id);
+            if(workout == null)
+            {
+                throw new ArgumentException($"Workout with ID {id} not found.");
+            }
             await _workoutRepository.DeleteWorkout(id);
+        }
+
+        public async Task DeleteWorkoutPermanently(string id)
+        {
+            var workout = await _workoutRepository.GetWorkoutById(id);
+            if (workout == null)
+            {
+                throw new ArgumentException($"Workout with ID {id} not found.");
+            }
+            await _workoutRepository.DeleteWorkoutPermanently(id);
         }
 
         public async Task<WorkoutDto> UpdateWorkout(WorkoutDto workoutDto, string id)
@@ -53,10 +68,11 @@ namespace FitnessPlatform.Services
             var foundWorkout = await _workoutRepository.GetWorkoutById(id);
             if (foundWorkout == null)
             {
-                throw new ArgumentException("Wrong id");
+                throw new ArgumentException($"Workout with ID {id} not found.");
             }
 
-            await _workoutRepository.UpdateWorkout(_mapper.Map<Workout>(workoutDto), id);
+            var updatedWorkout = _mapper.Map<Workout>(workoutDto);
+            await _workoutRepository.UpdateWorkout(updatedWorkout, id);
             return await GetWorkoutById(id);
         }
     }

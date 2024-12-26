@@ -4,6 +4,8 @@ using FitnessPlatform.Repositories.Abstractions;
 
 using Microsoft.EntityFrameworkCore;
 
+using System.Security.AccessControl;
+
 namespace FitnessPlatform.Repositories
 {
     public class WorkoutRepository : IWorkoutRepository
@@ -23,7 +25,7 @@ namespace FitnessPlatform.Repositories
         public async Task<Workout> GetWorkoutById(string id)
         {
             int parsedId = int.Parse(id);
-            return await _context.Workouts.FirstOrDefaultAsync(w => w.WorkoutId == parsedId);
+            return await _context.Workouts.FindAsync(parsedId);
         }
 
         public async Task<Workout> GetWorkoutByType(string type)
@@ -40,7 +42,18 @@ namespace FitnessPlatform.Repositories
         public async Task DeleteWorkout(string id)
         {
             int parsedId = int.Parse(id);
-            var workout = await _context.Workouts.FirstOrDefaultAsync(w => w.WorkoutId == parsedId);
+            var workout = await _context.Workouts.FindAsync(parsedId);
+            if (workout != null)
+            {
+                workout.IsDeleted = true;
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeleteWorkoutPermanently(string id)
+        {
+            int parsedId = int.Parse(id);
+            var workout = await _context.Workouts.FindAsync(parsedId);
             if (workout != null)
             {
                 _context.Workouts.Remove(workout);
@@ -51,19 +64,11 @@ namespace FitnessPlatform.Repositories
         public async Task UpdateWorkout(Workout workout, string id)
         {
             int parsedId = int.Parse(id);
-            var existingWorkout = await _context.Workouts.FirstOrDefaultAsync(w => w.WorkoutId == parsedId);
+            var existingWorkout = await _context.Workouts.FindAsync(parsedId);
 
             if (existingWorkout != null)
             {
-                // Update fields
-                existingWorkout.WorkoutDescription = workout.WorkoutDescription;
-                existingWorkout.WorkoutType = workout.WorkoutType;
-                existingWorkout.DifficultyLevel = workout.DifficultyLevel;
-                existingWorkout.WorkoutDuration = workout.WorkoutDuration;
-                existingWorkout.CaloriesBurned = workout.CaloriesBurned;
-                existingWorkout.ContentPath = workout.ContentPath;
-
-                // Save changes
+                _context.Entry(existingWorkout).CurrentValues.SetValues(workout);
                 await _context.SaveChangesAsync();
             }
         }

@@ -9,6 +9,7 @@ namespace FitnessPlatform.Repositories.Abstractions
         Task<Workout> GetWorkoutByType(string type);
         Task InsertWorkout(Workout workout);
         Task DeleteWorkout(string id);
+        Task DeleteWorkoutPermanently(string id);
         Task UpdateWorkout(Workout workout, string id);
     }
 }

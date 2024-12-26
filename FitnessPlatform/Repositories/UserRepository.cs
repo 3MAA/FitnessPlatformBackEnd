@@ -27,18 +27,12 @@ namespace FitnessPlatform.Repositories
 
         public async Task<User> GetUserById(string id)
         {
-            //return await _context.Users.FindAsync(id);
             int parsedId = int.Parse(id);
-            return await _context.Users
-                .Include(u => u.Objectives)
-                .Include(u => u.Subscriptions)
-                .Include(u => u.Discounts)
-                .FirstOrDefaultAsync(u => u.UserId == parsedId);
+            return await _context.Users.FindAsync(parsedId);
         }
 
         public async Task<User> GetUserByName(string name)
         {
-            //return await _context.Users.FindAsync(name);
             return await _context.Users
                 .Include(u => u.Objectives)
                 .Include(u => u.Subscriptions)
@@ -55,7 +49,7 @@ namespace FitnessPlatform.Repositories
         public async Task DeleteUser(string id)
         {
             int parsedId = int.Parse(id);
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == parsedId);
+            var user = await _context.Users.FindAsync(parsedId);
             if (user != null)
             {
                 _context.Users.Remove(user);
@@ -66,7 +60,7 @@ namespace FitnessPlatform.Repositories
         public async Task UpdateUser(User user, string id)
         {
             int parsedId = int.Parse(id);
-            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.UserId == parsedId);
+            var existingUser = await _context.Users.FindAsync(parsedId);
 
             if (existingUser != null)
             {

@@ -44,14 +44,25 @@ namespace FitnessPlatform.Controllers
             return CreatedAtAction(nameof(GetWorkoutById), new { id = workoutDto.WorkoutId }, PostSuccessMessage);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        [HttpDelete("logical/{id}")]
+        public async Task<IActionResult> DeleteLogical(string id)
         {
             var workout = await _workoutService.GetWorkoutById(id);
             if (workout == null)
                 return NotFound(new { Message = $"Workout with ID {id} not found." });
 
             await _workoutService.DeleteWorkout(id);
+            return NoContent();
+        }
+
+        [HttpDelete("physical/{id}")]
+        public async Task<IActionResult> DeletePhysical(string id)
+        {
+            var workout = await _workoutService.GetWorkoutById(id);
+            if (workout == null)
+                return NotFound(new { Message = $"Workout with ID {id} not found." });
+
+            await _workoutService.DeleteWorkoutPermanently(id);
             return NoContent();
         }
 

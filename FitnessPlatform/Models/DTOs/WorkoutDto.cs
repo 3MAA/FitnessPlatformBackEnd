@@ -15,5 +15,6 @@
         public decimal? CaloriesBurned { get; set; }
 
         public string? ContentPath { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

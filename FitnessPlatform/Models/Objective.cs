@@ -20,6 +20,7 @@ public partial class Objective
     public DateOnly? StartDate { get; set; }
 
     public DateOnly? Deadline { get; set; }
+    public bool IsDeleted { get; set; }
 
     public virtual User? UserIdNavigation { get; set; }
 }

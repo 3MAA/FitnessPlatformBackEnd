@@ -45,7 +45,24 @@ namespace FitnessPlatform.Services
 
         public async Task DeleteObjective(string id)
         {
+            var foundObjective = await _objectiveRepository.GetObjectiveById(id);
+            if (foundObjective == null)
+            {
+                throw new ArgumentException($"Objective with ID {id} not found.");
+            }
+
             await _objectiveRepository.DeleteObjective(id);
+        }
+
+        public async Task DeleteObjectivePermanently(string id)
+        {
+            var foundObjective = await _objectiveRepository.GetObjectiveById(id);
+            if (foundObjective == null)
+            {
+                throw new ArgumentException($"Objective with ID {id} not found.");
+            }
+
+            await _objectiveRepository.DeleteObjectivePermanently(id);
         }
 
         public async Task<ObjectiveDto> UpdateObjective(ObjectiveDto objectiveDto, string id)
@@ -53,10 +70,11 @@ namespace FitnessPlatform.Services
             var foundObjective = await _objectiveRepository.GetObjectiveById(id);
             if (foundObjective == null)
             {
-                throw new ArgumentException("Wrong id");
+                throw new ArgumentException($"Objective with ID {id} not found.");
             }
 
-            await _objectiveRepository.UpdateObjective(_mapper.Map<Objective>(objectiveDto), id);
+            var updatedObjective = _mapper.Map<Objective>(objectiveDto);
+            await _objectiveRepository.UpdateObjective(updatedObjective, id);
             return await GetObjectiveById(id);
         }
     }

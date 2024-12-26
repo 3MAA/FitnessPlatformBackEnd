@@ -9,6 +9,7 @@ namespace FitnessPlatform.Repositories.Abstractions
         Task<Objective> GetObjectiveByType(string type);
         Task InsertObjective(Objective objective);
         Task DeleteObjective(string id);
+        Task DeleteObjectivePermanently(string id);
         Task UpdateObjective(Objective objective, string id);
     }
 }

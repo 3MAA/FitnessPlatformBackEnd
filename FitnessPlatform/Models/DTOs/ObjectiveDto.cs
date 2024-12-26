@@ -15,5 +15,6 @@
         public DateOnly? StartDate { get; set; }
 
         public DateOnly? Deadline { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

@@ -45,6 +45,11 @@ namespace FitnessPlatform.Services
 
         public async Task DeleteUser(string id)
         {
+            var user = await _userRepository.GetUserById(id);
+            if (user == null)
+            {
+                throw new ArgumentException($"User with ID {id} not found.");
+            }
             await _userRepository.DeleteUser(id);
         }
 
@@ -53,10 +58,11 @@ namespace FitnessPlatform.Services
             var foundUser = await _userRepository.GetUserById(id);
             if (foundUser == null)
             {
-                throw new ArgumentException("Wrong id");
+                throw new ArgumentException($"User with ID {id} not found.");
             }
 
-            await _userRepository.UpdateUser(_mapper.Map<User>(userDto), id);
+            var updatedUser = _mapper.Map<User>(userDto);
+            await _userRepository.UpdateUser(updatedUser, id);
             return await GetUserById(id);
         }
     }
