@@ -25,9 +25,14 @@ namespace FitnessPlatform.Repositories
         public async Task<Objective> GetObjectiveById(string id)
         {
             int parsedId = int.Parse(id);
-            return await _context.Objectives
-                .Include(o => o.UserIdNavigation)
-                .FirstOrDefaultAsync(o => o.ObjectiveId == parsedId);
+            var objective = await _context.Objectives.FindAsync(parsedId); 
+
+            if (objective != null)
+            {
+                await _context.Entry(objective).Reference(o => o.UserIdNavigation).LoadAsync();
+            }
+
+            return objective;
         }
 
         public async Task<Objective> GetObjectiveByType(string type)
@@ -46,7 +51,20 @@ namespace FitnessPlatform.Repositories
         public async Task DeleteObjective(string id)
         {
             int parsedId = int.Parse(id);
-            var objective = await _context.Objectives.FirstOrDefaultAsync(o => o.ObjectiveId == parsedId);
+            var objective = await _context.Objectives.FindAsync(parsedId);
+
+            if (objective != null)
+            {
+                objective.IsDeleted = true; 
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeleteObjectivePermanently(string id)
+        {
+            int parsedId = int.Parse(id);
+            var objective = await _context.Objectives.FindAsync(parsedId);
+
             if (objective != null)
             {
                 _context.Objectives.Remove(objective);
@@ -57,19 +75,11 @@ namespace FitnessPlatform.Repositories
         public async Task UpdateObjective(Objective objective, string id)
         {
             int parsedId = int.Parse(id);
-            var existingObjective = await _context.Objectives.FirstOrDefaultAsync(o => o.ObjectiveId == parsedId);
+            var existingObjective = await _context.Objectives.FindAsync(parsedId);
 
             if (existingObjective != null)
             {
-                // Update fields
-                existingObjective.UserId = objective.UserId;
-                existingObjective.ObjectiveType = objective.ObjectiveType;
-                existingObjective.TargetValue = objective.TargetValue;
-                existingObjective.Progress = objective.Progress;
-                existingObjective.StartDate = objective.StartDate;
-                existingObjective.Deadline = objective.Deadline;
-
-                // Save changes
+                _context.Entry(existingObjective).CurrentValues.SetValues(objective);
                 await _context.SaveChangesAsync();
             }
         }
