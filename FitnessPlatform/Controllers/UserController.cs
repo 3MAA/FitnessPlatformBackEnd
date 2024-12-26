@@ -10,7 +10,7 @@ namespace FitnessPlatform.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private const string PostSuccessMessage = "Successfully registered";
+        private const string PostSuccessMessage = "Successfully registered!";
 
         private readonly IUserService _userService;
 
