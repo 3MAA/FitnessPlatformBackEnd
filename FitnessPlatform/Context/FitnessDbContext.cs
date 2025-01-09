@@ -30,6 +30,8 @@ public partial class FitnessDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    public virtual DbSet<UserWorkout> UserWorkouts { get; set; }
+
     public virtual DbSet<Workout> Workouts { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -42,7 +44,7 @@ public partial class FitnessDbContext : DbContext
         {
             entity.HasKey(e => e.DiscountId).HasName("PK__Discount__E43F6D96989FDC9D");
 
-            entity.Property(e => e.DiscountId).ValueGeneratedNever();
+            //entity.Property(e => e.DiscountId).ValueGeneratedNever();
             entity.Property(e => e.DiscountPercent).HasColumnType("decimal(5, 2)");
 
             entity.HasOne(d => d.UserIdNavigation).WithMany(p => p.Discounts)
