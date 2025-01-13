@@ -39,7 +39,22 @@ namespace FitnessPlatform.Services
                 return false;
             }
 
-            // 3. Acorda discount de 10% pentru utilizator
+            // 3. Verifica numarul de discounturi acordate in acest an
+            var currentYear = DateOnly.FromDateTime(DateTime.Now).Year;
+            var startOfYear = new DateOnly(currentYear, 1, 1);
+            var endOfYear = new DateOnly(currentYear, 12, 31);
+
+            var discountCountThisYear = await _context.Discounts
+                .Where(d => d.UserId == userId && d.GrantDate >= startOfYear && d.GrantDate <= endOfYear)
+                .CountAsync();
+
+            if (discountCountThisYear >= 2)
+            {
+                // Discounturile au fost deja acordate de doua ori in acest an
+                return false;
+            }
+
+            // 4. Acorda discount de 10% pentru utilizator
             var discount = new Discount
             {
                 UserId = userId,
