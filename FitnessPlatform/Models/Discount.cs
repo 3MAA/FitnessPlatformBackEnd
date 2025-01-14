@@ -19,5 +19,7 @@ public partial class Discount
 
     public DateOnly? ExpirationDate { get; set; }
 
+    public bool IsUsed { get; set; }
+
     public virtual User? UserIdNavigation { get; set; }
 }
