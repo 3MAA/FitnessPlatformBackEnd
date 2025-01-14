@@ -35,7 +35,11 @@ namespace FitnessPlatform.Services
             }
 
             var objectives = await _objectiveRepository.GetAllObjectives();
-            var objectivesDto = _mapper.Map<List<ObjectiveDto>>(objectives);
+
+            // Filtrare pentru a exclude obiectivele sterse logic
+            var filteredObjectives = objectives.Where(o => !o.IsDeleted).ToList();
+
+            var objectivesDto = _mapper.Map<List<ObjectiveDto>>(filteredObjectives);
 
             await _distributedCache.SetStringAsync("all_objectives", JsonSerializer.Serialize(objectivesDto), new DistributedCacheEntryOptions
             {
